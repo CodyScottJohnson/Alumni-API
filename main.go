@@ -1,6 +1,6 @@
 package main
 
-import "github.com/dhax/go-base/cmd"
+import "Alumni-API/cmd"
 
 func main() {
 	cmd.Execute()

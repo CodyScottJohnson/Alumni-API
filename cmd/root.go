@@ -2,10 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 
-	homedir "github.com/mitchellh/go-homedir"
+	//homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -60,15 +59,20 @@ func initConfig() {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
 	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			log.Fatal(err)
-		}
-
+		/*
+			// Find home directory.
+			home, err := homedir.Dir()
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println(home)
+		*/
 		// Search config in home directory with name ".go-base" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".go-base")
+		//viper.AddConfigPath("")
+		//viper.AddConfigPath(home)
+
+		viper.SetConfigName(".alumni-api")
+		viper.AddConfigPath(".")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
@@ -76,5 +80,13 @@ func initConfig() {
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
+		viper.WatchConfig()
+	} else {
+		err = viper.WriteConfigAs(".alumni-api.yaml")
+		if err != nil {
+			fmt.Println("Unable to Save Config")
+		} else {
+			fmt.Println("Config saved as:", ".alumni-api.yaml")
+		}
 	}
 }
